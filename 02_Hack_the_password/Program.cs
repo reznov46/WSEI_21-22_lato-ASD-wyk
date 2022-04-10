@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Text;
+
 namespace _02_Hack_the_password
 {
     internal class Program
     {
-
         internal class Node
         {
             internal Node prev = null;
             internal Node next = null;
             internal char cha;
+
             internal Node(char ch)
             {
                 cha = ch;
             }
         }
+
         static void Main()
         {
             int amount = int.Parse(Console.ReadLine());
@@ -55,8 +58,7 @@ namespace _02_Hack_the_password
                     {
                         if (current == null)
                             current = head;
-                        else
-                            if (current.next != null)
+                        else if (current.next != null)
                             current = current.next;
                     }
                     else
@@ -77,16 +79,15 @@ namespace _02_Hack_the_password
                                 current.next.prev = current.prev;
                             current = current.prev;
                         }
-
                     }
                 }
-
+                StringBuilder sb = new StringBuilder();
                 while (head != null)
                 {
-                    Console.Write(head.cha);
+                    sb.Append(head.cha);
                     head = head.next;
                 }
-                Console.WriteLine();
+                Console.WriteLine(sb);
                 amount--;
             }
         }
