@@ -10,6 +10,7 @@ namespace _02_Hack_the_password
             internal Node prev = null;
             internal Node next = null;
             internal char cha;
+
             internal Node(char ch)
             {
                 cha = ch;
@@ -26,40 +27,7 @@ namespace _02_Hack_the_password
                 Node head = null;
                 for (int i = 0; i < line.Length; i++)
                 {
-                    if (line[i] == '<')
-                    {
-                        if (current == null)
-                            continue;
-                        current = current.prev;
-                    }
-                    else if (line[i] == '>')
-                    {
-                        if (current == null)
-                            current = head;
-                        else
-                            if (current.next != null)
-                            current = current.next;
-                    }
-                    else if (line[i] == '-')
-                    {
-                        if (current == null)
-                            continue;
-                        if (current.prev == null)
-                        {
-                            head = current.next;
-                            current = null;
-                            if (head != null)
-                                head.prev = null;
-                        }
-                        else
-                        {
-                            current.prev.next = current.next;
-                            if (current.next != null)
-                                current.next.prev = current.prev;
-                            current = current.prev;
-                        }
-                    }
-                    else
+                    if (line[i] != '<' && line[i] != '>' && line[i] != '-')
                     {
                         if (current == null)
                         {
@@ -80,8 +48,40 @@ namespace _02_Hack_the_password
                             current = newNode;
                         }
                     }
+                    else if (line[i] == '<')
+                    {
+                        if (current == null)
+                            continue;
+                        current = current.prev;
+                    }
+                    else if (line[i] == '>')
+                    {
+                        if (current == null)
+                            current = head;
+                        else if (current.next != null)
+                            current = current.next;
+                    }
+                    else
+                    {
+                        if (current == null)
+                            continue;
+                        if (current.prev == null)
+                        {
+                            head = current.next;
+                            current = null;
+                            if (head != null)
+                                head.prev = null;
+                        }
+                        else
+                        {
+                            current.prev.next = current.next;
+                            if (current.next != null)
+                                current.next.prev = current.prev;
+                            current = current.prev;
+                        }
+                    }
                 }
-                StringBuilder sb = new();
+                StringBuilder sb = new StringBuilder();
                 while (head != null)
                 {
                     sb.Append(head.cha);
