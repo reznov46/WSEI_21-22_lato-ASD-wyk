@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Text;
+
 namespace _02_Hack_the_password
 {
     internal class Program
     {
-
         internal class Node
         {
             internal Node prev = null;
@@ -14,6 +15,7 @@ namespace _02_Hack_the_password
                 cha = ch;
             }
         }
+
         static void Main()
         {
             int amount = int.Parse(Console.ReadLine());
@@ -24,7 +26,40 @@ namespace _02_Hack_the_password
                 Node head = null;
                 for (int i = 0; i < line.Length; i++)
                 {
-                    if (line[i] != '<' && line[i] != '>' && line[i] != '-')
+                    if (line[i] == '<')
+                    {
+                        if (current == null)
+                            continue;
+                        current = current.prev;
+                    }
+                    else if (line[i] == '>')
+                    {
+                        if (current == null)
+                            current = head;
+                        else
+                            if (current.next != null)
+                            current = current.next;
+                    }
+                    else if (line[i] == '-')
+                    {
+                        if (current == null)
+                            continue;
+                        if (current.prev == null)
+                        {
+                            head = current.next;
+                            current = null;
+                            if (head != null)
+                                head.prev = null;
+                        }
+                        else
+                        {
+                            current.prev.next = current.next;
+                            if (current.next != null)
+                                current.next.prev = current.prev;
+                            current = current.prev;
+                        }
+                    }
+                    else
                     {
                         if (current == null)
                         {
@@ -45,48 +80,14 @@ namespace _02_Hack_the_password
                             current = newNode;
                         }
                     }
-                    else if (line[i] == '<')
-                    {
-                        if (current == null)
-                            continue;
-                        current = current.prev;
-                    }
-                    else if (line[i] == '>')
-                    {
-                        if (current == null)
-                            current = head;
-                        else
-                            if (current.next != null)
-                            current = current.next;
-                    }
-                    else
-                    {
-                        if (current == null)
-                            continue;
-                        if (current.prev == null)
-                        {
-                            head = current.next;
-                            current = null;
-                            if (head != null)
-                                head.prev = null;
-                        }
-                        else
-                        {
-                            current.prev.next = current.next;
-                            if (current.next != null)
-                                current.next.prev = current.prev;
-                            current = current.prev;
-                        }
-
-                    }
                 }
-
+                StringBuilder sb = new();
                 while (head != null)
                 {
-                    Console.Write(head.cha);
+                    sb.Append(head.cha);
                     head = head.next;
                 }
-                Console.WriteLine();
+                Console.WriteLine(sb);
                 amount--;
             }
         }
